@@ -15,4 +15,4 @@ sync:
 ql:
   port: 50091
 metrics:
-  port: 6060
+  port: 6064

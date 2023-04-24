@@ -1,5 +1,9 @@
 WS_URL=ws://localhost:8545
-
+SNAPSHOT_METRICS_PORT=6060
+STREAM_METRICS_PORT=6061
+RELAY_METRICS_PORT=6062
+FAUCET_METRICS_PORT=6063
+FAUCET_PK=7c852118294e51e653712a81e05800f419141751be58f605c371e15141b007a6
 GITCOMMIT := $(shell git rev-parse HEAD)
 GITDATE := $(shell git show -s --format='%ct')
 VERSION := v0.0.0
@@ -84,23 +88,23 @@ mode:
 .PHONY: mode
 
 run-ecs-stream:
-	./bin/ecs-stream -ws-url $(WS_URL)
+	./bin/ecs-stream -ws-url $(WS_URL) -metrics-port $(STREAM_METRICS_PORT)
 .PHONY: run-ecs-stream
 
 run-ecs-snapshot:
-	./bin/ecs-snapshot -ws-url $(WS_URL) --block ${SNAPSHOT_START_BLOCK}
+	./bin/ecs-snapshot -ws-url $(WS_URL) -metrics-port $(SNAPSHOT_METRICS_PORT) --block ${SNAPSHOT_START_BLOCK}
 .PHONY: run-ecs-snapshot
 
 run-ecs-relay:
-	./bin/ecs-relay
+	./bin/ecs-relay -metrics-port $(RELAY_METRICS_PORT)
 .PHONY: run-ecs-relay
 
 run-faucet:
-	./bin/faucet --faucet-private-key ${FAUCET_PK}
+	./bin/faucet --faucet-private-key $(FAUCET_PK) -metrics-port $(FAUCET_METRICS_PORT)
 .PHONY: run-faucet
 
 run-faucet-dev:
-	./bin/faucet --faucet-private-key ${FAUCET_PK} --dev
+	./bin/faucet --faucet-private-key $(FAUCET_PK) --dev -metrics-port $(FAUCET_METRICS_PORT)
 .PHONY: run-faucet-dev
 
 run-migrator:
